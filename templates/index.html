@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Search</title>
+</head>
+<body>
+
+    <h2>Upload Image</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <br>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    {% if results %}
+        <h3>Results:</h3>
+
+        {% for r in results %}
+            <div style="margin-bottom:30px; border:1px solid #ccc; padding:10px; width:260px;">
+                
+                <p><b>{{ r }}</b></p>
+
+                {% set img_path = r.replace('_', '/', 2) %}
+
+                <!-- IMAGE -->
+                <img src="https://amzn-saar-mumbai.s3.amazonaws.com/{{ img_path }}" width="250"><br><br>
+
+                <!-- DOWNLOAD BUTTON -->
+                <a href="https://amzn-saar-mumbai.s3.amazonaws.com/{{ img_path }}" download>
+                    <button style="padding:5px 10px;">Download</button>
+                </a>
+
+            </div>
+        {% endfor %}
+
+    {% endif %}
+
+</body>
+</html>
