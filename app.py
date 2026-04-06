@@ -4,7 +4,7 @@ import os
 from PIL import Image
 import io
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 # ✅ AWS credentials from environment (SAFE)
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
@@ -57,13 +57,19 @@ def index():
                 CollectionId=COLLECTION_ID,
                 Image={"Bytes": image_bytes},
                 FaceMatchThreshold=80,
-                MaxFaces=100  # 🔥 unlimited jaisa (max 100)
+                MaxFaces=100
             )
 
-            # ✅ Extract results
+            # ✅ Extract results + image URL
             for match in response["FaceMatches"]:
-                face_id = match["Face"]["ExternalImageId"]
-                results.append(face_id)
+                key = match["Face"]["ExternalImageId"]
+
+                image_url = f"https://{BUCKET}.s3.ap-south-1.amazonaws.com/all/all/{key}"
+
+                results.append({
+                    "name": key,
+                    "url": image_url
+                })
 
         except Exception as e:
             error = str(e)
@@ -71,5 +77,6 @@ def index():
     return render_template("index.html", results=results, error=error)
 
 
+# ✅ FIX (बहुत जरूरी)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=10000)
