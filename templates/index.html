@@ -2,51 +2,34 @@
 <html>
 <head>
     <title>Face Search</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        img {
-            width: 100%;
-            border-radius: 8px;
-        }
-    </style>
 </head>
-
 <body>
 
-    <h2>Upload Photo</h2>
+<h2>Upload Image</h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" required>
-        <button type="submit">Search</button>
-    </form>
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <button type="submit">Upload</button>
+</form>
 
+<hr>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<h3>Results:</h3>
+
+{% for result in results %}
+<div style="margin-bottom:20px;">
+    <p>{{ result.name }}</p>
+    <img src="{{ result.url }}" width="200"/>
     <br>
+    <a href="{{ result.url }}" download>
+        <button>Download</button>
+    </a>
+</div>
+{% endfor %}
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
-
-    <div class="grid">
-        {% for item in results %}
-            <div class="card">
-                <img src="{{ item.url }}">
-                <p>{{ item.name }}</p>
-                <a href="{{ item.url }}" download>Download</a
+</body>
+</html>
