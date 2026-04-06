@@ -4,7 +4,7 @@ import os
 from PIL import Image
 import io
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # ✅ AWS credentials from environment (SAFE)
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
